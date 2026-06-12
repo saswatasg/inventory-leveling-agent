@@ -2,7 +2,7 @@ import { formatDate } from '../lib'
 
 export function Header({ today }: { today: string }) {
   return (
-    <header className="border-b border-line/60 bg-navy-900/70 backdrop-blur-md">
+    <header className="border-b border-line/60 bg-navy-900/95">
       <div className="mx-auto flex max-w-7xl flex-col gap-6 px-6 py-6 md:flex-row md:items-center md:justify-between md:py-7">
         <div className="flex items-start gap-4">
           <img

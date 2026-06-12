@@ -6,7 +6,8 @@ import { BomExplosionDrawer } from './components/BomExplosionDrawer'
 import { CostImpact } from './components/CostImpact'
 import { Header } from './components/Header'
 import { HealthDashboard } from './components/HealthDashboard'
-import { ProcurementTimeline } from './components/ProcurementTimeline'
+import { InventoryLeveling } from './components/InventoryLeveling'
+import { ProcurementGantt } from './components/ProcurementGantt'
 import { ReorderRecommendations } from './components/ReorderRecommendations'
 
 export default function App() {
@@ -48,7 +49,8 @@ export default function App() {
 
         <HealthDashboard rows={rows} onOpenBom={setOpenRow} />
         <ReorderRecommendations items={schedule} today={TODAY} />
-        <ProcurementTimeline items={schedule} today={TODAY} />
+        <ProcurementGantt items={schedule} today={TODAY} />
+        <InventoryLeveling />
         <CostImpact impact={impact} />
       </main>
 

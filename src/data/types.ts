@@ -94,3 +94,68 @@ export interface CostImpact {
   ordersAtRiskValue: number
   ordersAtRiskCount: number
 }
+
+// ── Lead-time leveling (v2): plan a single production run from its BOM ──
+
+/** One line of an uploaded / sample BOM. Lead time + quantity are the focus. */
+export interface BomRow {
+  name: string
+  /** units of this component per one finished unit */
+  qtyPerUnit: number
+  /** supplier lead time in days — drives the backward schedule */
+  leadTimeDays: number
+  /** current stock on hand (would come from D365 in production) */
+  onHand: number
+  unitCost: number
+}
+
+/** Per-component result of leveling one production run. */
+export interface LevelingRow {
+  name: string
+  qtyPerUnit: number
+  leadTimeDays: number
+  onHand: number
+  unitCost: number
+  /** orderQty × qtyPerUnit */
+  required: number
+  /** max(0, required − onHand) */
+  shortage: number
+  /** ISO — productionDate − leadTime (when the PO must be placed) */
+  orderByDate: string
+  /** ISO — when the component is needed (= productionDate) */
+  arrivalDate: string
+  /** orderByDate ≥ today: can still be procured reactively in time */
+  feasible: boolean
+  /** days this part would sit idle if ordered today instead of at orderByDate */
+  idleDaysIfOrderedToday: number
+  /** capital you avoid tying up by waiting: shortage × unitCost × holdingRate × idleDays/365 */
+  holdingCostAvoided: number
+}
+
+export interface LevelingImpact {
+  /** total cash to cover all shortages across the run */
+  totalProcurementCost: number
+  /** spend that must be committed now (order-by date already reached or passed) */
+  dueNowCost: number
+  /** spend the schedule defers — ordered later, not tied up today (totalProcurement − dueNow) */
+  capitalDeferred: number
+  /** annual-equivalent holding cost avoided by staggering vs ordering everything today */
+  holdingCostAvoided: number
+  /** components that cannot be procured in time → must be forecast / pre-stocked */
+  mustPreStockCount: number
+  /** the binding lead time (days) — the longest-lead short component */
+  criticalPathDays: number
+}
+
+/** A single bar on the reusable Gantt. */
+export interface GanttRow {
+  label: string
+  sublabel: string
+  /** ISO — bar start (order-by date) */
+  start: string
+  /** ISO — bar end (arrival / need-by date) */
+  end: string
+  leadTimeDays: number
+  /** drives bar color */
+  tone: 'critical' | 'normal' | 'monitor'
+}

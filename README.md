@@ -19,10 +19,25 @@ orders, the agent:
    safe PO date (`required ship date − supplier lead time`), prioritised.
 5. **Quantifies the money** — working capital trapped in overstock, annual holding cost that frees
    up, and the order revenue exposed by shortages.
+6. **Levels a production run by lead time** — given one finished good's BOM (quantity + lead time
+   per component) and a target build date, it **back-schedules every purchase order** so parts
+   arrive just-in-time (`order-by = build date − supplier lead time`). Long-lead items are ordered
+   first, short-lead last — so capital isn't tied up early. Components whose lead time exceeds the
+   runway are flagged as **forecast / pre-stock**. Rendered as a **Gantt** with a configurable
+   build date and order quantity, and you can **upload your own BOM as CSV**.
 
-The headline insight built into the data: a few cheap components (an M8 bolt, a ball bearing) are
-shared across multiple BOMs, so their demand **compounds** and quietly threatens the earliest
-order's ship date. The agent surfaces exactly that.
+The headline insight built into the multi-order data: a few cheap components (an M8 bolt, a ball
+bearing) are shared across multiple BOMs, so their demand **compounds** and quietly threatens the
+earliest order's ship date. The leveling planner adds the time dimension the client asked for —
+*when* to place each order so inventory is leveled and working capital is deferred, not lost.
+
+### The two Gantts
+- **Procurement Schedule** — every open-order shortage on a timeline, each bar running from its
+  order-by date to the date it's first needed. Bars crossing the "today" line are overdue.
+- **Inventory Leveling** — plan a single future production run: set the build date + quantity (or
+  upload a BOM CSV with `name, qtyPerUnit, leadTimeDays, onHand, unitCost`), and watch the schedule
+  re-stagger live. Headline metrics: **capital deferred** (cash scheduled for later, not committed
+  today), **commit now**, **carrying cost avoided /yr**, and the **critical path** lead time.
 
 ## Run it
 
@@ -41,17 +56,21 @@ No environment variables, no secrets. Requires Node 18+.
 ## How it's built
 
 - **Vite + React + TypeScript**, **Tailwind CSS** for styling. Dark-navy, cyan-accent, Poppins.
-- All mock data lives in typed files under [`src/data`](src/data) (`skus`, `orders`, `boms`).
+- All mock data lives in typed files under [`src/data`](src/data) (`skus`, `orders`, `boms`, and the
+  `sampleBom` production run).
 - All leveling logic lives in pure, unit-tested functions under [`src/lib`](src/lib) —
   `explodeBOM`, `netRequirements`, `minimumStockLevel`, `procurementSchedule`, `alerts`,
-  `costImpact`. The dashboard is a thin view over these.
-- A fixed planning date (`TODAY` in [`src/data/index.ts`](src/data/index.ts)) keeps the demo and
-  the tests deterministic.
+  `costImpact`, plus `levelProductionRun` / `scheduleToGanttRows` (the lead-time Gantt) and
+  `parseBomCsv` (the upload). The dashboard is a thin view over these.
+- A fixed planning date (`TODAY` in [`src/data/constants.ts`](src/data/constants.ts)) keeps the demo
+  and the tests deterministic.
 
-The tests in [`src/lib/__tests__`](src/lib/__tests__) assert the numbers reconcile — gross equals
+The 28 tests in [`src/lib/__tests__`](src/lib/__tests__) assert the numbers reconcile — gross equals
 the sum of its per-order contributions, `belowMinBy = net + safety stock` for every SKU, the four
 status buckets partition all 20 SKUs, recommended order quantities restore stock exactly to the
-minimum, and the cost figures match an independent recomputation.
+minimum, the cost figures match an independent recomputation, and for the leveling planner
+`order-by = build date − lead time`, feasibility flips at the runway boundary, and a BOM CSV
+round-trips without loss.
 
 ## Deploying a live URL
 

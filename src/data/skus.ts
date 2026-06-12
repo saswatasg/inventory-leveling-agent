@@ -7,6 +7,10 @@ import type { Sku } from './types'
 //   • 3 Overstocked— idle capital sitting on the shelf
 // Arrival dates are relative to TODAY (2026-06-09); several land AFTER the
 // earliest order ships (2026-06-15), which is the whole point.
+//
+// Lead times span 7 → 120 days on purpose: long-lead motors/castings/electronics
+// vs short-lead fasteners. This makes the procurement Gantt stagger sharply and,
+// against ship dates only weeks out, leaves many long-lead orders already overdue.
 
 export const skus: Sku[] = [
   // ── Castings / structural ──
@@ -15,7 +19,7 @@ export const skus: Sku[] = [
     name: 'Steel Casting Housing',
     category: 'Castings',
     unitCost: 45,
-    supplierLeadTimeDays: 30,
+    supplierLeadTimeDays: 90,
     onHand: 30,
     incomingPoQty: 0,
     incomingPoArrivalDate: null,
@@ -26,7 +30,7 @@ export const skus: Sku[] = [
     name: 'Aluminum Bracket',
     category: 'Castings',
     unitCost: 6.5,
-    supplierLeadTimeDays: 18,
+    supplierLeadTimeDays: 25,
     onHand: 900, // OVERSTOCKED
     incomingPoQty: 0,
     incomingPoArrivalDate: null,
@@ -39,7 +43,7 @@ export const skus: Sku[] = [
     name: 'M8 Hex Bolt',
     category: 'Fasteners',
     unitCost: 0.45,
-    supplierLeadTimeDays: 21,
+    supplierLeadTimeDays: 14,
     onHand: 300, // CRITICAL — used in all 4 orders
     incomingPoQty: 80,
     incomingPoArrivalDate: '2026-06-27',
@@ -50,7 +54,7 @@ export const skus: Sku[] = [
     name: 'M6 Socket Screw',
     category: 'Fasteners',
     unitCost: 0.3,
-    supplierLeadTimeDays: 14,
+    supplierLeadTimeDays: 10,
     onHand: 200, // CRITICAL
     incomingPoQty: 50,
     incomingPoArrivalDate: '2026-06-21',
@@ -61,20 +65,20 @@ export const skus: Sku[] = [
     name: 'Hex Nut M8',
     category: 'Fasteners',
     unitCost: 0.12,
-    supplierLeadTimeDays: 14,
+    supplierLeadTimeDays: 7,
     onHand: 180, // CRITICAL
     incomingPoQty: 40,
     incomingPoArrivalDate: '2026-06-19',
     safetyStock: 50,
   },
 
-  // ── Motors ──
+  // ── Motors (longest lead — the binding constraint) ──
   {
     code: 'SKU-1006',
     name: 'Servo Motor 1.5kW',
     category: 'Motors',
     unitCost: 320,
-    supplierLeadTimeDays: 42,
+    supplierLeadTimeDays: 120,
     onHand: 20,
     incomingPoQty: 0,
     incomingPoArrivalDate: null,
@@ -85,7 +89,7 @@ export const skus: Sku[] = [
     name: 'Servo Motor 0.75kW',
     category: 'Motors',
     unitCost: 210,
-    supplierLeadTimeDays: 42,
+    supplierLeadTimeDays: 110,
     onHand: 60, // LOW
     incomingPoQty: 10,
     incomingPoArrivalDate: '2026-06-29',
@@ -98,7 +102,7 @@ export const skus: Sku[] = [
     name: 'Ball Bearing 6204',
     category: 'Bearings',
     unitCost: 3.2,
-    supplierLeadTimeDays: 28,
+    supplierLeadTimeDays: 45,
     onHand: 120, // CRITICAL — used in all 4 orders, PO lands after earliest ship
     incomingPoQty: 60,
     incomingPoArrivalDate: '2026-07-09',
@@ -109,7 +113,7 @@ export const skus: Sku[] = [
     name: 'Roller Bearing 30205',
     category: 'Bearings',
     unitCost: 5.5,
-    supplierLeadTimeDays: 28,
+    supplierLeadTimeDays: 45,
     onHand: 70, // LOW
     incomingPoQty: 18,
     incomingPoArrivalDate: '2026-06-24',
@@ -122,7 +126,7 @@ export const skus: Sku[] = [
     name: 'Oil Seal 35x52',
     category: 'Seals',
     unitCost: 2.1,
-    supplierLeadTimeDays: 21,
+    supplierLeadTimeDays: 30,
     onHand: 80,
     incomingPoQty: 0,
     incomingPoArrivalDate: null,
@@ -146,7 +150,7 @@ export const skus: Sku[] = [
     name: 'PLC Control Board',
     category: 'Electronics',
     unitCost: 85,
-    supplierLeadTimeDays: 35,
+    supplierLeadTimeDays: 75,
     onHand: 45, // LOW
     incomingPoQty: 12,
     incomingPoArrivalDate: '2026-06-23',
@@ -157,7 +161,7 @@ export const skus: Sku[] = [
     name: 'Power Supply 24V',
     category: 'Electronics',
     unitCost: 38,
-    supplierLeadTimeDays: 28,
+    supplierLeadTimeDays: 40,
     onHand: 75,
     incomingPoQty: 0,
     incomingPoArrivalDate: null,
@@ -168,7 +172,7 @@ export const skus: Sku[] = [
     name: 'Wiring Harness',
     category: 'Electronics',
     unitCost: 22,
-    supplierLeadTimeDays: 21,
+    supplierLeadTimeDays: 28,
     onHand: 65, // LOW
     incomingPoQty: 18,
     incomingPoArrivalDate: '2026-06-25',
@@ -179,7 +183,7 @@ export const skus: Sku[] = [
     name: 'Proximity Sensor',
     category: 'Electronics',
     unitCost: 18.5,
-    supplierLeadTimeDays: 35,
+    supplierLeadTimeDays: 90,
     onHand: 40, // CRITICAL
     incomingPoQty: 20,
     incomingPoArrivalDate: '2026-07-04',
@@ -192,7 +196,7 @@ export const skus: Sku[] = [
     name: 'Drive Shaft',
     category: 'Machined',
     unitCost: 28,
-    supplierLeadTimeDays: 30,
+    supplierLeadTimeDays: 50,
     onHand: 60,
     incomingPoQty: 0,
     incomingPoArrivalDate: null,
@@ -203,7 +207,7 @@ export const skus: Sku[] = [
     name: 'Coupling Flange',
     category: 'Machined',
     unitCost: 16,
-    supplierLeadTimeDays: 25,
+    supplierLeadTimeDays: 35,
     onHand: 52, // LOW
     incomingPoQty: 12,
     incomingPoArrivalDate: '2026-06-30',
@@ -227,7 +231,7 @@ export const skus: Sku[] = [
     name: 'Cooling Fan',
     category: 'Electronics',
     unitCost: 12,
-    supplierLeadTimeDays: 16,
+    supplierLeadTimeDays: 20,
     onHand: 500, // OVERSTOCKED
     incomingPoQty: 0,
     incomingPoArrivalDate: null,
@@ -238,7 +242,7 @@ export const skus: Sku[] = [
     name: 'Hydraulic Hose 1m',
     category: 'Hydraulics',
     unitCost: 9,
-    supplierLeadTimeDays: 18,
+    supplierLeadTimeDays: 21,
     onHand: 50,
     incomingPoQty: 0,
     incomingPoArrivalDate: null,

@@ -33,13 +33,9 @@ export function BomExplosionDrawer({
 
   return (
     <div className="fixed inset-0 z-50 flex justify-end">
-      <div
-        className="absolute inset-0 bg-black/60 backdrop-blur-sm"
-        onClick={onClose}
-        aria-hidden
-      />
+      <div className="absolute inset-0 bg-black/70" onClick={onClose} aria-hidden />
       <aside className="scrollbar-thin relative h-full w-full max-w-lg overflow-y-auto border-l border-line bg-navy-800 shadow-2xl">
-        <div className="sticky top-0 z-10 border-b border-line bg-navy-800/95 px-6 py-4 backdrop-blur">
+        <div className="sticky top-0 z-10 border-b border-line bg-navy-800 px-6 py-4">
           <div className="flex items-start justify-between gap-4">
             <div>
               <div className="text-[11px] font-semibold uppercase tracking-wider text-txt-3">
