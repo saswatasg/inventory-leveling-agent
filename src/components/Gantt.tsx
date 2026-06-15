@@ -50,7 +50,7 @@ export function Gantt({
   return (
     <div className="card overflow-hidden">
       <div className="scrollbar-thin overflow-x-auto">
-        <div className="min-w-[820px]">
+        <div className="min-w-[820px] px-4 pt-2">
           {/* axis header */}
           <div className="flex">
             <div className="shrink-0" style={{ width: LABEL_W }} />
