@@ -169,20 +169,21 @@ export function Overview({
 
         <button
           onClick={() => onNavigate('leveling')}
-          className="card group p-4 text-left transition-colors hover:border-mint/40"
+          className="card group relative flex flex-col overflow-hidden p-4 text-left transition-colors hover:border-mint/40"
         >
+          <div className="absolute inset-x-0 top-0 h-1 bg-mint/70" />
           <div className="text-sm font-bold tracking-tight">Capital leveling</div>
-          <p className="mt-1 text-xs text-txt-3">
+          <p className="mt-1 text-xs leading-relaxed text-txt-3">
             Back-schedule a production run by lead time and defer cash until each part is needed.
           </p>
-          <div className="mt-4 text-3xl font-extrabold tnum text-mint">
-            {fmtMoneyCompact(leveling.impact.capitalDeferred)}
-          </div>
-          <div className="text-xs text-txt-2">
-            working capital deferred on the sample run
-          </div>
-          <div className="mt-4 inline-flex items-center gap-1 text-xs font-semibold text-accent group-hover:underline">
-            Open the leveling planner →
+          <div className="mt-auto pt-5">
+            <div className="text-4xl font-extrabold tnum text-mint">
+              {fmtMoneyCompact(leveling.impact.capitalDeferred)}
+            </div>
+            <div className="mt-0.5 text-xs text-txt-2">working capital deferred on the sample run</div>
+            <div className="mt-3 inline-flex items-center gap-1 text-xs font-semibold text-accent group-hover:underline">
+              Open the leveling planner →
+            </div>
           </div>
         </button>
       </div>

@@ -38,15 +38,17 @@ export default function App() {
         <TopBar active={view} onChange={setView} today={TODAY} />
 
         <main className="scrollbar-thin flex-1 overflow-y-auto px-5 py-6 md:px-7">
-          <div className="mx-auto max-w-7xl">
-            {view === 'overview' && (
-              <Overview rows={rows} schedule={schedule} impact={impact} onNavigate={setView} />
-            )}
-            {view === 'health' && <HealthDashboard rows={rows} onOpenBom={setOpenRow} />}
-            {view === 'reorder' && <ReorderRecommendations items={schedule} today={TODAY} />}
-            {view === 'schedule' && <ProcurementGantt items={schedule} today={TODAY} />}
-            {view === 'leveling' && <InventoryLeveling />}
-            {view === 'cost' && <CostImpact impact={impact} />}
+          <div className="mx-auto flex min-h-full max-w-7xl flex-col">
+            <div className="flex-1">
+              {view === 'overview' && (
+                <Overview rows={rows} schedule={schedule} impact={impact} onNavigate={setView} />
+              )}
+              {view === 'health' && <HealthDashboard rows={rows} onOpenBom={setOpenRow} />}
+              {view === 'reorder' && <ReorderRecommendations items={schedule} today={TODAY} />}
+              {view === 'schedule' && <ProcurementGantt items={schedule} today={TODAY} />}
+              {view === 'leveling' && <InventoryLeveling />}
+              {view === 'cost' && <CostImpact impact={impact} />}
+            </div>
 
             <footer className="mt-10 border-t border-line/50 pt-5 text-center text-xs text-txt-3">
               Upcore Technologies · Inventory Leveling &amp; Procurement Intelligence Agent ·

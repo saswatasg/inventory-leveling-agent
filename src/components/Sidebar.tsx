@@ -17,18 +17,17 @@ export function Sidebar({
 }) {
   return (
     <aside className="hidden w-60 shrink-0 flex-col border-r border-line/60 bg-navy-900/80 lg:flex">
-      <div className="flex items-center gap-2.5 px-5 py-5">
-        <img src="/upcore-logo.svg" alt="Upcore" className="h-8 w-auto" />
-        <div className="h-7 w-px bg-line" />
+      <div className="flex items-center gap-2.5 border-b border-line/40 px-5 py-4">
+        <img src="/upcore-logo.svg" alt="Upcore" className="h-7 w-auto" />
         <div className="leading-tight">
-          <div className="text-[11px] font-bold tracking-tight text-txt">Inventory Agent</div>
-          <div className="flex items-center gap-1 text-[10px] text-txt-3">
+          <div className="text-xs font-bold tracking-tight text-txt">Inventory Agent</div>
+          <div className="flex items-center gap-1.5 text-[10px] text-txt-3">
             <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-accent" /> live
           </div>
         </div>
       </div>
 
-      <nav className="flex-1 space-y-1 px-3 py-2">
+      <nav className="flex-1 space-y-1 px-3 py-3">
         {NAV.map((item) => {
           const isActive = item.id === active
           const badge = badges?.[item.id]
