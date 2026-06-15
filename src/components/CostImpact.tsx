@@ -4,14 +4,6 @@ import { fmtMoneyCompact } from '../lib'
 export function CostImpact({ impact }: { impact: Impact }) {
   return (
     <section>
-      <div className="mb-4">
-        <h2 className="text-lg font-bold tracking-tight">Cost Impact</h2>
-        <p className="text-sm text-txt-3">
-          What acting on this analysis is worth — capital freed from overstock, and revenue pulled
-          out of the line of fire.
-        </p>
-      </div>
-
       <div className="grid gap-3 md:grid-cols-3">
         {/* Stockout exposure */}
         <div className="card relative overflow-hidden p-5">

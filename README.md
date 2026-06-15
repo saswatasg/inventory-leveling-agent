@@ -58,6 +58,9 @@ No environment variables, no secrets. Requires Node 18+.
 ## How it's built
 
 - **Vite + React + TypeScript**, **Tailwind CSS** for styling. Dark-navy, cyan-accent, Poppins.
+- An **app-shell layout**: a left sidebar menu switches between views — **Overview** (KPIs, health
+  tiles, top priorities, capital-leveling teaser), **Inventory Health**, **Reorder**, **Procurement**,
+  **Leveling**, and **Cost Impact** — with a sticky top bar. Not a single long scroll.
 - All mock data lives in typed files under [`src/data`](src/data) (`skus`, `orders`, `boms`, and the
   `sampleBom` production run).
 - All leveling logic lives in pure, unit-tested functions under [`src/lib`](src/lib) —

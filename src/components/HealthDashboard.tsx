@@ -41,15 +41,10 @@ export function HealthDashboard({
 
   return (
     <section>
-      <div className="mb-4 flex items-end justify-between gap-4">
-        <div>
-          <h2 className="text-lg font-bold tracking-tight">Inventory Health</h2>
-          <p className="text-sm text-txt-3">
-            {rows.length} components across {new Set(rows.map((r) => r.sku.category)).size} categories
-            · click a tile to filter
-          </p>
-        </div>
-      </div>
+      <p className="mb-4 text-sm text-txt-3">
+        {rows.length} components across {new Set(rows.map((r) => r.sku.category)).size} categories ·
+        click a tile to filter
+      </p>
 
       <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">
         {TILES.map((t) => (

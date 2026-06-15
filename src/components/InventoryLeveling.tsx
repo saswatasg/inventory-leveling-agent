@@ -79,17 +79,12 @@ export function InventoryLeveling() {
 
   return (
     <section>
-      <div className="mb-4">
-        <h2 className="text-lg font-bold tracking-tight">
-          Inventory Leveling <span className="text-txt-3">· plan a production run</span>
-        </h2>
-        <p className="max-w-3xl text-sm text-txt-3">
-          Give it a BOM (quantity + lead time per part) and a build date — it back-schedules every
-          purchase order so parts arrive <span className="text-txt-2">just-in-time</span>: long-lead
-          items ordered first, short-lead last. You commit cash only as each part is actually needed,
-          instead of tying up working capital months early.
-        </p>
-      </div>
+      <p className="mb-4 max-w-3xl text-sm text-txt-3">
+        Give it a BOM (quantity + lead time per part) and a build date — it back-schedules every
+        purchase order so parts arrive <span className="text-txt-2">just-in-time</span>: long-lead
+        items ordered first, short-lead last. You commit cash only as each part is actually needed,
+        instead of tying up working capital months early.
+      </p>
 
       {/* controls */}
       <div className="card mb-3 flex flex-wrap items-end gap-x-5 gap-y-3 p-4">

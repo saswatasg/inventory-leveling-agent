@@ -19,13 +19,6 @@ export function ProcurementGantt({
 
   return (
     <section>
-      <div className="mb-4">
-        <h2 className="text-lg font-bold tracking-tight">Procurement Schedule</h2>
-        <p className="text-sm text-txt-3">
-          Every open-order shortage placed on a timeline by the day its PO must go in — long-lead
-          parts on the left, short-lead on the right.
-        </p>
-      </div>
       <Gantt rows={rows} today={today} emptyLabel="No open shortages to schedule." />
     </section>
   )

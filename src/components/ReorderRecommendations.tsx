@@ -11,14 +11,6 @@ export function ReorderRecommendations({
 }) {
   return (
     <section>
-      <div className="mb-4">
-        <h2 className="text-lg font-bold tracking-tight">Reorder Recommendations</h2>
-        <p className="text-sm text-txt-3">
-          What to buy to bring every short component back to its minimum level — and the last day to
-          place each PO.
-        </p>
-      </div>
-
       <div className="card scrollbar-thin overflow-x-auto">
         <table className="w-full min-w-[720px] border-collapse text-sm">
           <thead>
