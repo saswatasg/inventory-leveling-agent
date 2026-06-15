@@ -4,6 +4,9 @@ A client-facing demo for **Upcore Technologies**. It proves the *agent logic* fo
 leveling and procurement planning on a realistic mock dataset — no real ERP connection, no
 backend, no database.
 
+> 📖 **Using the app?** See the [**User Manual**](MANUAL.md) — views, the leveling planner, BOM
+> upload, how to read the Gantt, and what every number means.
+
 ## What it does
 
 Given a set of open sales orders, their bills of material, current stock, and open purchase
