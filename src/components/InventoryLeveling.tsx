@@ -64,12 +64,18 @@ export function InventoryLeveling() {
 
   function loadSample() {
     setBom(sampleBom)
+    setOrderQty(DEFAULT_ORDER_QTY)
+    setProductionDate(DEFAULT_PRODUCTION_DATE)
     setSourceLabel(SAMPLE_PRODUCT)
     setUploadMsg('')
     setUploadErrors([])
   }
 
   const runway = daysBetween(TODAY, productionDate)
+  const pctDeferred =
+    impact.totalProcurementCost > 0
+      ? Math.round((impact.capitalDeferred / impact.totalProcurementCost) * 100)
+      : 0
 
   return (
     <section>
@@ -77,10 +83,11 @@ export function InventoryLeveling() {
         <h2 className="text-lg font-bold tracking-tight">
           Inventory Leveling <span className="text-txt-3">· plan a production run</span>
         </h2>
-        <p className="text-sm text-txt-3">
-          Upload a BOM (quantity + lead time), set the build date, and the agent back-schedules every
-          purchase so parts arrive just-in-time — ordering long-lead items first and short-lead last,
-          so capital isn&rsquo;t tied up early.
+        <p className="max-w-3xl text-sm text-txt-3">
+          Give it a BOM (quantity + lead time per part) and a build date — it back-schedules every
+          purchase order so parts arrive <span className="text-txt-2">just-in-time</span>: long-lead
+          items ordered first, short-lead last. You commit cash only as each part is actually needed,
+          instead of tying up working capital months early.
         </p>
       </div>
 
@@ -148,36 +155,69 @@ export function InventoryLeveling() {
         )}
       </div>
 
-      {/* impact cards */}
-      <div className="mb-3 grid gap-3 md:grid-cols-4">
-        <ImpactCard
-          accent="text-overstocked"
-          bar="bg-overstocked"
-          label="Capital deferred"
-          value={fmtMoneyCompact(impact.capitalDeferred)}
-          note="Scheduled for later — not committed today."
+      {/* hero: order-everything-today vs. leveled */}
+      <div className="card mb-3 p-4 md:p-5">
+        <div className="mb-3 text-[11px] font-semibold uppercase tracking-wider text-txt-3">
+          What leveling is worth on this run
+        </div>
+        <div className="grid items-stretch gap-3 md:grid-cols-[1fr_auto_1fr]">
+          {/* order everything today */}
+          <div className="rounded-xl border border-critical/30 bg-critical/[0.06] p-4">
+            <div className="text-xs font-semibold text-critical">Order everything today</div>
+            <div className="mt-1 text-2xl font-extrabold tnum text-txt">
+              {fmtMoneyCompact(impact.totalProcurementCost)}
+              <span className="ml-1 text-sm font-medium text-txt-3">committed now</span>
+            </div>
+            <p className="mt-2 text-[11px] leading-relaxed text-txt-2">
+              {fmtMoneyCompact(impact.capitalDeferred)} of it sits idle for weeks before it&rsquo;s
+              needed — roughly {fmtMoney(impact.holdingCostAvoided)}/yr in carrying cost.
+            </p>
+          </div>
+
+          {/* delta */}
+          <div className="flex flex-row items-center justify-center gap-3 px-2 md:flex-col">
+            <div className="text-2xl text-txt-3">→</div>
+            <div className="text-center">
+              <div className="text-2xl font-extrabold tnum text-mint">
+                {fmtMoneyCompact(impact.capitalDeferred)}
+              </div>
+              <div className="text-[10px] font-semibold uppercase tracking-wide text-txt-3">
+                freed up front · {pctDeferred}%
+              </div>
+            </div>
+          </div>
+
+          {/* leveled */}
+          <div className="rounded-xl border border-mint/40 bg-mint/[0.07] p-4">
+            <div className="flex items-center gap-2">
+              <div className="text-xs font-semibold text-mint">Leveled schedule</div>
+              <span className="rounded-full border border-mint/40 bg-mint/10 px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wide text-mint">
+                recommended
+              </span>
+            </div>
+            <div className="mt-1 text-2xl font-extrabold tnum text-txt">
+              {fmtMoneyCompact(impact.dueNowCost)}
+              <span className="ml-1 text-sm font-medium text-txt-3">committed now</span>
+            </div>
+            <p className="mt-2 text-[11px] leading-relaxed text-txt-2">
+              The remaining {fmtMoneyCompact(impact.capitalDeferred)} is ordered only as each part is
+              needed — no early stock, near-zero idle carrying cost.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      {/* compact stat row */}
+      <div className="mb-3 grid grid-cols-2 gap-3 md:grid-cols-4">
+        <Stat label="Order value" value={fmtMoneyCompact(impact.totalProcurementCost)} note="Total components to procure" />
+        <Stat
+          label="Must pre-stock"
+          value={`${impact.mustPreStockCount}`}
+          note="Lead time exceeds the runway"
+          tone={impact.mustPreStockCount > 0 ? 'text-critical' : 'text-optimal'}
         />
-        <ImpactCard
-          accent="text-critical"
-          bar="bg-critical"
-          label="Commit now"
-          value={fmtMoneyCompact(impact.dueNowCost)}
-          note={`${impact.mustPreStockCount} part${impact.mustPreStockCount === 1 ? '' : 's'} must be pre-stocked (lead > runway).`}
-        />
-        <ImpactCard
-          accent="text-optimal"
-          bar="bg-optimal"
-          label="Carrying cost avoided /yr"
-          value={fmtMoneyCompact(impact.holdingCostAvoided)}
-          note="By staggering vs. ordering everything today."
-        />
-        <ImpactCard
-          accent="text-accent"
-          bar="bg-accent"
-          label="Critical path"
-          value={`${impact.criticalPathDays}d`}
-          note="Longest lead time — the binding constraint."
-        />
+        <Stat label="Critical path" value={`${impact.criticalPathDays}d`} note="Longest lead — the constraint" tone="text-accent" />
+        <Stat label="Carrying cost avoided" value={`${fmtMoneyCompact(impact.holdingCostAvoided)}/yr`} note="On stock that would sit idle" tone="text-optimal" />
       </div>
 
       {/* gantt */}
@@ -249,25 +289,22 @@ export function InventoryLeveling() {
   )
 }
 
-function ImpactCard({
-  accent,
-  bar,
+function Stat({
   label,
   value,
   note,
+  tone = 'text-txt',
 }: {
-  accent: string
-  bar: string
   label: string
   value: string
   note: string
+  tone?: string
 }) {
   return (
-    <div className="card relative overflow-hidden p-4">
-      <div className={`absolute inset-x-0 top-0 h-1 ${bar}`} />
+    <div className="card p-4">
       <div className="text-[11px] font-semibold uppercase tracking-wider text-txt-3">{label}</div>
-      <div className={`mt-1.5 text-2xl font-extrabold tnum ${accent}`}>{value}</div>
-      <p className="mt-1.5 text-[11px] leading-relaxed text-txt-2">{note}</p>
+      <div className={`mt-1 text-2xl font-extrabold tnum ${tone}`}>{value}</div>
+      <div className="mt-1 text-[11px] text-txt-3">{note}</div>
     </div>
   )
 }

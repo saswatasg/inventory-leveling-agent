@@ -12,27 +12,40 @@ export function Header({ today }: { today: string }) {
           />
           <div className="hidden h-10 w-px bg-line md:block" />
           <div>
-            <div className="mb-1 flex items-center gap-2">
+            <div className="mb-1 flex flex-wrap items-center gap-2">
               <span className="inline-flex items-center gap-1.5 rounded-full border border-accent/30 bg-accent/10 px-2.5 py-0.5 text-[11px] font-semibold uppercase tracking-wider text-accent">
                 <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-accent" />
                 Agent · Live
+              </span>
+              <span className="inline-flex items-center rounded-full border border-mint/30 bg-mint/10 px-2.5 py-0.5 text-[11px] font-semibold uppercase tracking-wider text-mint">
+                Dynamics 365-ready
               </span>
             </div>
             <h1 className="text-xl font-extrabold leading-tight tracking-tight md:text-2xl">
               Inventory Leveling &amp; Procurement Intelligence Agent
             </h1>
             <p className="mt-1 max-w-2xl text-sm text-txt-2">
-              Explodes every open order through its BOM, nets demand against stock and POs, and
-              tells you the minimum to hold &mdash; and exactly what to buy, and by when.
+              Explodes every order through its BOM, nets demand against live stock, and back-schedules
+              each purchase by supplier lead time &mdash; so you hold the minimum, protect every ship
+              date, and never tie up working capital early.
             </p>
           </div>
         </div>
 
-        <div className="shrink-0 rounded-xl border border-line bg-card/50 px-4 py-2.5 text-right">
-          <div className="text-[11px] font-medium uppercase tracking-wider text-txt-3">
-            Planning date
+        <div className="flex shrink-0 items-stretch gap-2">
+          <div className="rounded-xl border border-line bg-card/50 px-4 py-2.5 text-right">
+            <div className="text-[11px] font-medium uppercase tracking-wider text-txt-3">
+              Data source
+            </div>
+            <div className="font-semibold text-txt">Demo CSV</div>
+            <div className="text-[10px] text-txt-3">live: Dynamics 365</div>
           </div>
-          <div className="font-semibold text-txt">{formatDate(today)}</div>
+          <div className="rounded-xl border border-line bg-card/50 px-4 py-2.5 text-right">
+            <div className="text-[11px] font-medium uppercase tracking-wider text-txt-3">
+              Planning date
+            </div>
+            <div className="font-semibold text-txt">{formatDate(today)}</div>
+          </div>
         </div>
       </div>
     </header>

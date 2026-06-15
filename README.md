@@ -36,8 +36,10 @@ earliest order's ship date. The leveling planner adds the time dimension the cli
   order-by date to the date it's first needed. Bars crossing the "today" line are overdue.
 - **Inventory Leveling** — plan a single future production run: set the build date + quantity (or
   upload a BOM CSV with `name, qtyPerUnit, leadTimeDays, onHand, unitCost`), and watch the schedule
-  re-stagger live. Headline metrics: **capital deferred** (cash scheduled for later, not committed
-  today), **commit now**, **carrying cost avoided /yr**, and the **critical path** lead time.
+  re-stagger live. Bars carry **arrival diamonds** that converge on the build-date marker, so you
+  can see every part landing just-in-time. A headline **"order everything today vs. leveled
+  schedule"** comparison quantifies the working capital freed up front; supporting stats cover order
+  value, parts that must be pre-stocked, the critical-path lead time, and carrying cost avoided.
 
 ## Run it
 

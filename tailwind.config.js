@@ -17,6 +17,7 @@ export default {
           soft: '#5fc6e6',
           dim: '#1d7fa0',
         },
+        mint: '#3dddc4', // Upcore highlight / "capital freed" success accent
         txt: {
           DEFAULT: '#ffffff',
           2: '#8bbed4',
